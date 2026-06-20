@@ -202,6 +202,8 @@
   .cc-head{background:var(--ac);color:#14140e;padding:1.9cqh 1.5cqw 1.5cqh;}
   .cc-head .t{font-size:2.4cqh;font-weight:800;line-height:1.08;}
   .cc-head .s{font-size:1.4cqh;font-weight:600;margin-top:.8cqh;opacity:.82;}
+  .cc-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0e0e14;}
+  .cc-img img{width:100%;height:100%;object-fit:cover;display:block;}
   .cc-engine{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.25cqh;padding:1.6cqh 1.5cqw;}
   .cc-row{display:flex;align-items:center;gap:1cqw;}
   .cc-badge{width:3.1cqh;height:3.1cqh;border-radius:50%;background:#22222d;color:#f3f1ec;font-size:1.4cqh;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
@@ -233,18 +235,18 @@
   var LABELS=['세','규','조','문','비'];
   var MALE={tag:'남성향',title:'인기작 세계관, 같은 <em>5대 요소</em> 구조',foot:'세계 · 규칙 · 조직 · 문제 · 비주얼',
     colors:['#4f8cff','#2dd4bf','#b78bff'],works:[
-    {n:'나 혼자만\n레벨업',s:'게이트가 열린 현대',v:['던전이 생긴 현대','헌터 등급·각성','길드·헌터 협회','마수의 침공','던전·그림자 군대']},
-    {n:'전지적\n독자 시점',s:'소설이 현실이 된 세계',v:['멸망이 시작된 서울','시나리오·코인·도깨비','성좌와 화신','멸망 시나리오','재난·거대 성좌']},
-    {n:'신의 탑',s:'모든 것이 있는 탑',v:['신이 만든 탑','시험·층·관리자','랭커·FUG','왜 탑을 오르나','무한히 높은 탑']}
+    {n:'나 혼자만\n레벨업',s:'게이트가 열린 현대',img:'assets/case/w-m-1.jpg',v:['던전이 생긴 현대','헌터 등급·각성','길드·헌터 협회','마수의 침공','던전·그림자 군대']},
+    {n:'전지적\n독자 시점',s:'소설이 현실이 된 세계',img:'assets/case/w-m-2.jpg',v:['멸망이 시작된 서울','시나리오·코인·도깨비','성좌와 화신','멸망 시나리오','재난·거대 성좌']},
+    {n:'신의 탑',s:'모든 것이 있는 탑',img:'assets/case/w-m-3.jpg',v:['신이 만든 탑','시험·층·관리자','랭커·FUG','왜 탑을 오르나','무한히 높은 탑']}
   ]};
   var FEMALE={tag:'여성향',title:'인기작 세계관, 같은 <em>5대 요소</em> 구조',foot:'세계 · 규칙 · 조직 · 문제 · 비주얼',
     colors:['#ff6b8a','#ffc24a','#ff8d5b'],works:[
-    {n:'재혼 황후',s:'두 제국의 황실',v:['동대·서대 제국','황실·이혼/재혼법','황실과 귀족','황후의 이혼','화려한 궁정·드레스']},
-    {n:'황제의\n외동딸',s:'검과 마나의 제국',v:['오벨리아 제국','황실 계승·마나','황실 권력','죽을 운명의 공녀','보석빛 궁전']},
-    {n:'그녀가 공작저로\n가야 했던 사정',s:'소설 속 공작가',v:['소설 속 중세 판타지','신분·계약 고용','에카르트 공작가','원작의 비극 회피','대저택·귀족 사회']}
+    {n:'재혼 황후',s:'두 제국의 황실',img:'assets/case/w-f-1.jpg',v:['동대·서대 제국','황실·이혼/재혼법','황실과 귀족','황후의 이혼','화려한 궁정·드레스']},
+    {n:'황제의\n외동딸',s:'검과 마나의 제국',img:'assets/case/w-f-2.jpg',v:['오벨리아 제국','황실 계승·마나','황실 권력','죽을 운명의 공녀','보석빛 궁전']},
+    {n:'그녀가 공작저로\n가야 했던 사정',s:'소설 속 공작가',img:'assets/case/w-f-3.jpg',v:['소설 속 중세 판타지','신분·계약 고용','에카르트 공작가','원작의 비극 회피','대저택·귀족 사회']}
   ]};
   function card(w,ac){var r='';for(var i=0;i<5;i++){r+='<div class="cc-row'+(i===4?' fin':'')+'"><span class="cc-badge">'+LABELS[i]+'</span><span class="cc-val">'+w.v[i]+'</span></div>';if(i<4)r+='<div class="cc-arrow">↓</div>';}
-    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-engine">'+r+'</div></article>';}
+    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-img"><img loading="lazy" src="'+w.img+'" alt=""></div><div class="cc-engine">'+r+'</div></article>';}
   function fill(id,d,pg){document.getElementById(id).innerHTML=
      '<div class="case-eyebrow"><span>CASE · 인기 세계관 분석</span><span class="pg">'+pg+'</span></div>'
      +'<div class="case-titlebar"><span class="chip">'+d.tag+'</span><h2>'+d.title+'</h2><span class="rule"></span></div>'

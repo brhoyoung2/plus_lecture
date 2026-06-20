@@ -216,6 +216,8 @@
   .cc-head{background:var(--ac);color:#14140e;padding:1.9cqh 1.5cqw 1.5cqh;}
   .cc-head .t{font-size:2.4cqh;font-weight:800;line-height:1.08;}
   .cc-head .s{font-size:1.4cqh;font-weight:600;margin-top:.8cqh;opacity:.82;}
+  .cc-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0e0e14;}
+  .cc-img img{width:100%;height:100%;object-fit:cover;display:block;}
   .cc-engine{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.25cqh;padding:1.6cqh 1.5cqw;}
   .cc-row{display:flex;align-items:center;gap:1cqw;}
   .cc-badge{width:3.1cqh;height:3.1cqh;border-radius:50%;background:#22222d;color:#f3f1ec;font-size:1.4cqh;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
@@ -247,18 +249,18 @@
   var LABELS=['목','갈','선','변','확'];
   var MALE={tag:'남성향',title:'인기작 3편, 같은 <em>엔진</em> 구조',foot:'판타지 · 게임 · 성장 — 사건 엔진은 동일',
     colors:['#4f8cff','#2dd4bf','#b78bff'],works:[
-    {n:'나 혼자만\n레벨업',s:'성진우 · E급 헌터의 각성',v:['생존','이중 던전의 함정','희생을 감수','플레이어로 각성','세계 최강자']},
-    {n:'전지적\n독자 시점',s:'김독자 · 소설이 현실이 되다',v:['생존','세계의 멸망','미래 정보 활용','영웅으로 각성','우주급 세계관']},
-    {n:'신의 탑',s:'밤 · 탑을 오르는 소년',v:['라헬과 재회','시험과 배신','동료를 지킴','정체의 각성','탑의 진실']}
+    {n:'나 혼자만\n레벨업',s:'성진우 · E급 헌터의 각성',img:'assets/case/e-m-1.jpg',v:['생존','이중 던전의 함정','희생을 감수','플레이어로 각성','세계 최강자']},
+    {n:'전지적\n독자 시점',s:'김독자 · 소설이 현실이 되다',img:'assets/case/e-m-2.jpg',v:['생존','세계의 멸망','미래 정보 활용','영웅으로 각성','우주급 세계관']},
+    {n:'신의 탑',s:'밤 · 탑을 오르는 소년',img:'assets/case/e-m-3.jpg',v:['라헬과 재회','시험과 배신','동료를 지킴','정체의 각성','탑의 진실']}
   ]};
   var FEMALE={tag:'여성향',title:'인기작 3편, 같은 <em>엔진</em> 구조',foot:'로맨스 · 성장 · 로판 — 사건 엔진은 동일',
     colors:['#ff6b8a','#ffc24a','#ff8d5b'],works:[
-    {n:'유미의\n세포들',s:'유미 · 직장인의 연애',v:['행복한 사랑','오해','용기내 고백','함께 성장','인생 전체 이야기']},
-    {n:'여신강림',s:'임주경 · 메이크업의 마법',v:['예쁜 모습 유지','민낯 들킬 위기','진짜 나 인정','자존감 회복','관계의 성숙']},
-    {n:'사내맞선',s:'신하리 · 대타로 나간 맞선',v:['맞선 모면','정체 들통','계약 연애','진심 자각','사내 로맨스 완성']}
+    {n:'유미의\n세포들',s:'유미 · 직장인의 연애',img:'assets/case/e-f-1.jpg',v:['행복한 사랑','오해','용기내 고백','함께 성장','인생 전체 이야기']},
+    {n:'여신강림',s:'임주경 · 메이크업의 마법',img:'assets/case/e-f-2.jpg',v:['예쁜 모습 유지','민낯 들킬 위기','진짜 나 인정','자존감 회복','관계의 성숙']},
+    {n:'사내맞선',s:'신하리 · 대타로 나간 맞선',img:'assets/case/e-f-3.jpg',v:['맞선 모면','정체 들통','계약 연애','진심 자각','사내 로맨스 완성']}
   ]};
   function card(w,ac){var r='';for(var i=0;i<5;i++){r+='<div class="cc-row'+(i===4?' fin':'')+'"><span class="cc-badge">'+LABELS[i]+'</span><span class="cc-val">'+w.v[i]+'</span></div>';if(i<4)r+='<div class="cc-arrow">↓</div>';}
-    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-engine">'+r+'</div></article>';}
+    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-img"><img loading="lazy" src="'+w.img+'" alt=""></div><div class="cc-engine">'+r+'</div></article>';}
   function fill(id,d,pg){document.getElementById(id).innerHTML=
      '<div class="case-eyebrow"><span>CASE · 흥행 웹툰 분석</span><span class="pg">'+pg+'</span></div>'
      +'<div class="case-titlebar"><span class="chip">'+d.tag+'</span><h2>'+d.title+'</h2><span class="rule"></span></div>'

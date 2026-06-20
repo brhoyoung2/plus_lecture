@@ -190,6 +190,8 @@
   .cc-head{background:var(--ac);color:#14140e;padding:1.9cqh 1.5cqw 1.5cqh;}
   .cc-head .t{font-size:2.4cqh;font-weight:800;line-height:1.08;}
   .cc-head .s{font-size:1.4cqh;font-weight:600;margin-top:.8cqh;opacity:.82;}
+  .cc-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0e0e14;}
+  .cc-img img{width:100%;height:100%;object-fit:cover;display:block;}
   .cc-engine{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.25cqh;padding:1.6cqh 1.5cqw;}
   .cc-row{display:flex;align-items:center;gap:1cqw;}
   .cc-badge{width:3.1cqh;height:3.1cqh;border-radius:50%;background:#22222d;color:#f3f1ec;font-size:1.4cqh;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
@@ -221,18 +223,18 @@
   var LABELS=['성','능','결','개','관'];
   var MALE={tag:'남성향',title:'인기 캐릭터, 같은 <em>5대 축</em> 구조',foot:'성장 · 능력 · 결핍 · 개성 · 관계',
     colors:['#4f8cff','#2dd4bf','#b78bff'],works:[
-    {n:'성진우',s:'나 혼자만 레벨업',v:['E급→그림자 군주','그림자 소환','약자의 설움·가족','냉정한 카리스마','헌터들·여동생 진아']},
-    {n:'김독자',s:'전지적 독자 시점',v:['독자→이야기의 주인공','결말을 아는 자','인정받지 못한 삶','집착적 몰입','유중혁·동료들']},
-    {n:'밤',s:'신의 탑',v:['무지→불규칙 랭커','무한한 잠재력','라헬을 향한 집착','순수한 맹목','라헬·동료들']}
+    {n:'성진우',s:'나 혼자만 레벨업',img:'assets/case/c-m-1.jpg',v:['E급→그림자 군주','그림자 소환','약자의 설움·가족','냉정한 카리스마','헌터들·여동생 진아']},
+    {n:'김독자',s:'전지적 독자 시점',img:'assets/case/c-m-2.jpg',v:['독자→이야기의 주인공','결말을 아는 자','인정받지 못한 삶','집착적 몰입','유중혁·동료들']},
+    {n:'밤',s:'신의 탑',img:'assets/case/c-m-3.jpg',v:['무지→불규칙 랭커','무한한 잠재력','라헬을 향한 집착','순수한 맹목','라헬·동료들']}
   ]};
   var FEMALE={tag:'여성향',title:'인기 캐릭터, 같은 <em>5대 축</em> 구조',foot:'성장 · 능력 · 결핍 · 개성 · 관계',
     colors:['#ff6b8a','#ffc24a','#ff8d5b'],works:[
-    {n:'유미',s:'유미의 세포들',v:['소심함→주체적','솔직한 공감력','연애 자신감 부족','다채로운 세포들','웅이·바비']},
-    {n:'임주경',s:'여신강림',v:['콤플렉스→자존감','메이크업의 마법','민낯 자격지심','화장 전후 반전','이수호·한서준']},
-    {n:'나비에',s:'재혼 황후',v:['버려진 황후→새 국모','흠 없는 통치력','사랑받지 못함','품위와 이성','소비에슈·하인리']}
+    {n:'유미',s:'유미의 세포들',img:'assets/case/c-f-1.jpg',v:['소심함→주체적','솔직한 공감력','연애 자신감 부족','다채로운 세포들','웅이·바비']},
+    {n:'임주경',s:'여신강림',img:'assets/case/c-f-2.jpg',v:['콤플렉스→자존감','메이크업의 마법','민낯 자격지심','화장 전후 반전','이수호·한서준']},
+    {n:'나비에',s:'재혼 황후',img:'assets/case/c-f-3.jpg',v:['버려진 황후→새 국모','흠 없는 통치력','사랑받지 못함','품위와 이성','소비에슈·하인리']}
   ]};
   function card(w,ac){var r='';for(var i=0;i<5;i++){r+='<div class="cc-row'+(i===4?' fin':'')+'"><span class="cc-badge">'+LABELS[i]+'</span><span class="cc-val">'+w.v[i]+'</span></div>';if(i<4)r+='<div class="cc-arrow">↓</div>';}
-    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-engine">'+r+'</div></article>';}
+    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-img"><img loading="lazy" src="'+w.img+'" alt=""></div><div class="cc-engine">'+r+'</div></article>';}
   function fill(id,d,pg){document.getElementById(id).innerHTML=
      '<div class="case-eyebrow"><span>CASE · 인기 캐릭터 분석</span><span class="pg">'+pg+'</span></div>'
      +'<div class="case-titlebar"><span class="chip">'+d.tag+'</span><h2>'+d.title+'</h2><span class="rule"></span></div>'
