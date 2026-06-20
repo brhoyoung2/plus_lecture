@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투닝플러스 교안 · 강사용 ver0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0f;
+    --bg2:#101017;
+    --panel:#16161f;
+    --panel2:#1c1c27;
+    --line:rgba(255,255,255,.08);
+    --line2:rgba(255,255,255,.14);
+    --paper:#f3f1ec;
+    --muted:#a3a3b8;
+    --dim:#6f6f86;
+    --faint:#4c4c5e;
+    --gold:#e7a93c;       /* 투닝플러스 브랜드 골드 */
+    --gold-soft:#f5c873;
+    /* 카테고리 컬러 */
+    --c-intro:#e7a93c;
+    --c-webtoon:#ffc24a;
+    --c-char:#ff6b8a;
+    --c-event:#3fc8be;
+    --c-world:#5b8def;
+    --c-camera:#a78bfa;
+    --display:'Black Han Sans',sans-serif;
+    --body:'Noto Sans KR',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    font-family:var(--body);
+    color:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ============ TOP BAR ============ */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;height:60px;z-index:100;
+    display:flex;align-items:center;gap:14px;padding:0 26px;
+    background:rgba(11,11,15,.72);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .logo{display:flex;align-items:center;gap:11px;}
+  .logo .mark{width:26px;height:26px;flex:none;}
+  .logo .wm{font-family:var(--display);font-size:16px;letter-spacing:.02em;}
+  .logo .wm b{color:var(--gold);}
+  .topbar .sep{width:1px;height:20px;background:var(--line2);}
+  .topbar .doc{font-size:13px;color:var(--muted);font-weight:500;}
+  .topbar .doc b{color:var(--paper);font-weight:700;}
+  .topbar .ver{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.06em;
+    color:var(--gold);border:1px solid rgba(231,169,60,.4);background:rgba(231,169,60,.08);
+    padding:5px 12px;border-radius:30px;}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;min-height:100vh;padding:60px 0 0;
+    display:flex;align-items:center;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 78% 30%, rgba(231,169,60,.10), transparent 55%),
+      radial-gradient(90% 80% at 10% 90%, rgba(91,141,239,.08), transparent 60%),
+      linear-gradient(180deg,#0d0d13 0%, var(--bg) 70%);
+  }
+  .hero .inner{
+    width:100%;max-width:1320px;margin:0 auto;padding:40px 56px;
+    display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:30px;
+    position:relative;z-index:3;
+  }
+  .hero-copy .eyebrow{
+    display:inline-flex;align-items:center;gap:11px;font-size:13px;font-weight:700;
+    letter-spacing:.22em;color:var(--gold);margin-bottom:26px;
+  }
+  .hero-copy .eyebrow .tag{
+    background:var(--gold);color:#1a1206;padding:4px 11px;border-radius:4px;
+    font-family:var(--display);font-size:12px;letter-spacing:.06em;
+  }
+  .hero-copy h1{
+    font-family:var(--display);font-weight:400;font-size:74px;line-height:1.04;
+    letter-spacing:-.01em;
+  }
+  .hero-copy h1 b{font-weight:400;
+    background:linear-gradient(92deg,var(--gold-soft),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-copy .en{font-size:17px;color:var(--dim);letter-spacing:.04em;margin-top:16px;font-weight:500;font-style:italic;}
+  .hero-copy .lede{font-size:18px;line-height:1.7;color:var(--muted);margin-top:26px;max-width:46ch;font-weight:500;}
+  .hero-copy .lede b{color:var(--paper);font-weight:700;}
+
+  .hero-meta{display:flex;gap:30px;margin-top:34px;}
+  .hero-meta .m .k{font-family:var(--display);font-size:30px;color:var(--paper);line-height:1;}
+  .hero-meta .m .k em{font-style:normal;color:var(--gold);}
+  .hero-meta .m .v{font-size:13px;color:var(--dim);margin-top:6px;font-weight:500;}
+  .hero-meta .vline{width:1px;background:var(--line2);}
+
+  .hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
+    padding:14px 24px;border-radius:12px;cursor:pointer;transition:.18s;border:1px solid transparent;
+  }
+  .btn.primary{background:var(--gold);color:#1a1206;}
+  .btn.primary:hover{background:var(--gold-soft);transform:translateY(-2px);}
+  .btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line2);color:var(--paper);}
+  .btn.ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
+
+  .hero-visual{position:relative;justify-self:end;width:100%;max-width:580px;}
+  .hero-visual .frame{
+    position:relative;border-radius:20px;overflow:hidden;
+    border:1px solid var(--line2);
+    box-shadow:0 40px 90px rgba(0,0,0,.6);
+    background:#000;
+  }
+  .hero-visual img{width:100%;display:block;}
+  .hero-visual .frame::after{ /* blend bottom into bg */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,transparent 60%, rgba(11,11,15,.35));
+  }
+  .hero-visual .cap{
+    position:absolute;left:18px;bottom:16px;z-index:2;
+    font-size:12px;color:var(--muted);letter-spacing:.04em;
+    background:rgba(0,0,0,.45);backdrop-filter:blur(4px);
+    padding:6px 12px;border-radius:20px;border:1px solid var(--line);
+  }
+  .hero-visual .float{
+    position:absolute;top:-16px;right:-14px;z-index:4;
+    font-family:var(--display);font-size:13px;color:#1a1206;background:var(--gold);
+    padding:8px 14px;border-radius:30px;box-shadow:0 14px 30px rgba(231,169,60,.35);
+    transform:rotate(4deg);
+  }
+  .scroll-hint{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;
+    font-size:12px;color:var(--dim);letter-spacing:.18em;text-align:center;animation:bob 2s ease-in-out infinite;
+  }
+  .scroll-hint span{display:block;font-size:18px;margin-top:6px;}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+
+  /* ============ CURRICULUM ============ */
+  .curriculum{max-width:1100px;margin:0 auto;padding:96px 56px 120px;}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:14px;flex-wrap:wrap;}
+  .sec-head .l .kicker{font-size:13px;font-weight:700;letter-spacing:.22em;color:var(--gold);}
+  .sec-head .l h2{font-family:var(--display);font-weight:400;font-size:44px;line-height:1.05;margin-top:12px;}
+  .sec-head .r{font-size:14px;color:var(--muted);text-align:right;line-height:1.6;max-width:32ch;font-weight:500;}
+  .sec-rule{height:1px;background:var(--line);margin:30px 0 14px;}
+
+  .lessons{display:flex;flex-direction:column;}
+  .lesson{
+    display:grid;grid-template-columns:104px 1fr auto;align-items:center;gap:26px;
+    padding:26px 22px;border-radius:16px;border:1px solid transparent;
+    position:relative;transition:.2s;
+  }
+  .lesson + .lesson{border-top:1px solid var(--line);border-radius:0;}
+  .lesson:hover{background:linear-gradient(90deg,var(--panel),var(--panel2));
+    border-color:var(--line2);border-radius:16px;transform:translateX(4px);}
+  .lesson:hover + .lesson{border-top-color:transparent;}
+  .lesson .no{
+    font-family:var(--display);font-size:46px;line-height:1;color:var(--faint);
+    transition:.2s;position:relative;padding-left:14px;
+  }
+  .lesson .no::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:4px;
+    border-radius:3px;background:var(--cat);opacity:.85;}
+  .lesson:hover .no{color:var(--cat);}
+  .lesson .body .tagline{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+  .lesson .body .chip{
+    font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--cat);border:1px solid var(--cat);border-radius:20px;padding:3px 10px;
+    opacity:.9;
+  }
+  .lesson .body .type{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.04em;}
+  .lesson .body h3{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.1;}
+  .lesson .body p{font-size:14.5px;color:var(--muted);margin-top:8px;line-height:1.55;max-width:62ch;font-weight:500;}
+  .lesson .body p b{color:var(--paper);font-weight:700;}
+  .lesson .go{
+    flex:none;display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;
+    color:var(--muted);border:1px solid var(--line2);border-radius:30px;padding:11px 18px;
+    transition:.2s;white-space:nowrap;
+  }
+  .lesson:hover .go{color:#1a1206;background:var(--cat);border-color:var(--cat);}
+  .lesson .go .arr{transition:.2s;}
+  .lesson:hover .go .arr{transform:translateX(3px);}
+
+  /* ============ FOOTER ============ */
+  footer{border-top:1px solid var(--line);padding:40px 56px 60px;}
+  footer .inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;
+    justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  footer .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-size:15px;}
+  footer .brand b{color:var(--gold);}
+  footer .note{font-size:13px;color:var(--dim);line-height:1.7;}
+  footer .note b{color:var(--muted);}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    .hero .inner{grid-template-columns:1fr;gap:48px;}
+    .hero-visual{justify-self:center;max-width:480px;}
+    .hero-copy h1{font-size:56px;}
+    .lesson{grid-template-columns:64px 1fr;gap:16px;}
+    .lesson .no{font-size:34px;}
+    .lesson .go{grid-column:2;justify-self:start;margin-top:6px;}
+  }
+  @media (max-width:560px){
+    .hero-copy h1{font-size:42px;}
+    .curriculum,.hero .inner{padding-left:22px;padding-right:22px;}
+    .sec-head .l h2{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <a class="logo" href="#top">
+    <svg class="mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="8" cy="8" r="5" fill="#f3f1ec"/>
+      <circle cx="8" cy="24" r="5" fill="#f3f1ec"/>
+      <circle cx="24" cy="24" r="5" fill="#f3f1ec"/>
+      <path d="M24 3v10M19 8h10" stroke="#e7a93c" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    <span class="wm">TOONING <b>PLUS</b></span>
+  </a>
+  <span class="sep"></span>
+  <span class="doc"><b>투닝플러스 교안</b> · 강사용</span>
+  <span class="ver">ver 0.1</span>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="inner">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="tag">TOONING PLUS</span> 창작 교육 · 강사용 교안</span>
+      <h1>AI 시대,<br><b>나만의 영감</b>에<br>집중하세요.</h1>
+      <p class="en">Focus on your Inspiration</p>
+      <p class="lede">속도와 제작은 AI가 맡고, <b>서사를 고르고 작품의 깊이를 더하는 일</b>은
+        여전히 사람의 몫입니다. 이 교안은 웹툰 스토리 설계의 뼈대를 순서대로 익히는
+        <b>강사용 커리큘럼</b>입니다.</p>
+
+      <div class="hero-meta">
+        <div class="m"><div class="k"><em>5</em>개 모듈</div><div class="v">소개 + 4대 스토리 설계</div></div>
+        <div class="vline"></div>
+        <div class="m"><div class="k">3대 <em>·</em> 5요소</div><div class="v">캐릭터 · 사건 · 세계관</div></div>
+        <div class="vline"></div>
+        <div class="m"><div class="k">연출 <em>+</em> 카메라</div><div class="v">앵글의 심리학</div></div>
+      </div>
+
+      <div class="hero-cta">
+        <a class="btn primary" href="#curriculum">커리큘럼 보기 <span>↓</span></a>
+        <a class="btn ghost" href="1.%ED%88%AC%EB%8B%9D%ED%94%8C%EB%9F%AC%EC%8A%A4%20%EC%86%8C%EA%B0%9C.pdf" target="_blank">투닝플러스 소개서 (PDF)</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="float">강사용 ver 0.1</div>
+      <div class="frame">
+        <img src="assets_hero_chars.png" alt="투닝플러스 캐릭터">
+        <div class="cap">TOONING PLUS · AI로 빚어낸 캐릭터들</div>
+      </div>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#curriculum">SCROLL<span>↓</span></a>
+</section>
+
+<!-- ===== CURRICULUM ===== -->
+<section class="curriculum" id="curriculum">
+  <div class="sec-head">
+    <div class="l">
+      <div class="kicker">CURRICULUM · 강의 순서</div>
+      <h2>순서대로 따라가는 교안</h2>
+    </div>
+    <p class="r">소개로 시작해 웹툰의 3대 요소를 큰 그림으로 잡고,
+      캐릭터·사건·세계관을 차례로 깊게 판 뒤, 카메라 앵글로 연출을 마무리합니다.</p>
+  </div>
+  <div class="sec-rule"></div>
+
+  <div class="lessons">
+
+    <!-- 00 소개 -->
+    <a class="lesson" style="--cat:var(--c-intro)" href="1.%ED%88%AC%EB%8B%9D%ED%94%8C%EB%9F%AC%EC%8A%A4%20%EC%86%8C%EA%B0%9C.pdf" target="_blank">
+      <div class="no">00</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">Intro</span><span class="type">PDF · 오리엔테이션</span></div>
+        <h3>투닝플러스 소개</h3>
+        <p>“왜 투닝플러스인가?” — AI 시대 창작 도구의 철학과 3D 스튜디오·에디터 워크플로우,
+          그리고 <b>나만의 영감에 집중</b>한다는 교육의 방향을 먼저 잡습니다.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+    <!-- 01 웹툰 3대 요소 -->
+    <a class="lesson" style="--cat:var(--c-webtoon)" href="2.%20%EC%9B%B9%ED%88%B0%EC%9D%98%203%EB%8C%80%EC%9A%94%EC%86%8C.html" target="_blank">
+      <div class="no">01</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">Overview</span><span class="type">슬라이드 · 스토리 뼈대</span></div>
+        <h3>웹툰의 3대 요소</h3>
+        <p>좋은 웹툰은 <b>사람(캐릭터) · 일(사건) · 세상(세계관)</b>이 함께 살아 움직인다.
+          이후 모듈의 큰 지도를 그리는 개요 강의입니다.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+    <!-- 02 캐릭터 -->
+    <a class="lesson" style="--cat:var(--c-char)" href="3.%20%EC%BA%90%EB%A6%AD%ED%84%B0%20%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C.html" target="_blank">
+      <div class="no">02</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">Character</span><span class="type">슬라이드 · 5대 축</span></div>
+        <h3>캐릭터의 5대 축</h3>
+        <p>한 인물은 <b>성장 · 능력 · 결핍 · 개성 · 관계</b> 다섯 축으로 빚어진다.
+          결핍에서 갈망이 태어나 관계 속에서 증명되는 캐릭터 설계법.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+    <!-- 03 사건 -->
+    <a class="lesson" style="--cat:var(--c-event)" href="4.%EC%82%AC%EA%B1%B4%EC%9D%98_5%EB%8C%80%EC%9A%94%EC%86%8C.html" target="_blank">
+      <div class="no">03</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">Event</span><span class="type">슬라이드 · 5대 요소</span></div>
+        <h3>사건의 5대 요소</h3>
+        <p>하나의 사건은 <b>목표 · 갈등 · 선택 · 변화 · 확장</b>의 톱니로 굴러간다.
+          확장이 다시 더 큰 목표가 되어 이야기를 점점 키우는 구조 설계.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+    <!-- 04 세계관 -->
+    <a class="lesson" style="--cat:var(--c-world)" href="5.%20%EB%B0%B0%EA%B2%BD(%EC%84%B8%EA%B3%84%EA%B4%80)%205%EB%8C%80%EC%9A%94%EC%86%8C.html" target="_blank">
+      <div class="no">04</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">World</span><span class="type">슬라이드 · 5대 요소</span></div>
+        <h3>세계관의 5대 요소</h3>
+        <p><b>세계 · 규칙 · 조직 · 문제 · 비주얼</b> 다섯 질문으로 무대를 세운다.
+          독자가 “들어가 보고 싶은 세계”를 만드는 배경 설계법.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+    <!-- 05 카메라 앵글 -->
+    <a class="lesson" style="--cat:var(--c-camera)" href="5.%20%EC%B9%B4%EB%A9%94%EB%9D%BC%20%EC%95%B5%EA%B8%80.html" target="_blank">
+      <div class="no">05</div>
+      <div class="body">
+        <div class="tagline"><span class="chip">Directing</span><span class="type">인터랙티브 · 10p 슬라이드</span></div>
+        <h3>카메라 앵글의 심리학</h3>
+        <p>앵글이 곧 인물 사이의 <b>권력</b>이다. 아이레벨·로우·하이·버드·웜즈·더치
+          앵글이 만드는 긴장감과 서사를 정리한 연출 마무리 강의.</p>
+      </div>
+      <div class="go">열기 <span class="arr">→</span></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="inner">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+        <circle cx="8" cy="8" r="5" fill="#f3f1ec"/><circle cx="8" cy="24" r="5" fill="#f3f1ec"/>
+        <circle cx="24" cy="24" r="5" fill="#f3f1ec"/>
+        <path d="M24 3v10M19 8h10" stroke="#e7a93c" stroke-width="3.4" stroke-linecap="round"/>
+      </svg>
+      TOONING <b>PLUS</b>
+    </div>
+    <div class="note">
+      <b>투닝플러스 교안 · 강사용 ver 0.1</b><br>
+      각 모듈은 새 탭에서 열립니다 · 슬라이드는 ← → 키 또는 화면 클릭으로 이동
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
