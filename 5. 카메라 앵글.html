@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카메라 앵글의 심리학</title>
+<style>
+  :root{
+    --bg:#16171C; --card:#1F2027; --card2:#262833; --amber:#F2B544; --amberD:#C8901F;
+    --txt:#F5F5F2; --mut:#9395A2; --mut2:#6E707C; --ground:#3A3B45;
+    --kfont:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    --serif:"Cambria","Georgia",serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#000;overflow:hidden;font-family:var(--kfont)}
+  #deck{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center}
+  #stage{width:1280px;height:720px;position:relative;background:var(--bg);transform-origin:center center}
+
+  .slide{position:absolute;inset:0;padding:54px 60px;opacity:0;visibility:hidden;transition:opacity .35s ease}
+  .slide.active{opacity:1;visibility:visible}
+
+  /* ── top bar ── */
+  #bar{position:fixed;top:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:14px;
+       padding:0 16px;background:rgba(13,14,18,.82);backdrop-filter:blur(6px);z-index:50;
+       border-bottom:1px solid #25262E;font-size:13px;color:var(--mut)}
+  #bar b{color:var(--txt)}
+  #bar .sp{flex:1}
+  #bar button,#bar input{font-family:var(--kfont);font-size:12.5px}
+  #bar button{background:#23242C;color:var(--txt);border:1px solid #34353F;border-radius:7px;
+       padding:6px 11px;cursor:pointer;transition:.15s}
+  #bar button:hover{background:#2E2F39;border-color:var(--amber)}
+  #bar button.primary{background:var(--amber);color:#1A1206;border-color:var(--amber);font-weight:700}
+  #bar button.primary:hover{background:#FFC85A}
+  #bar button:disabled{opacity:.5;cursor:default}
+  #keyField{background:#1B1C23;color:var(--mut);border:1px solid #34353F;border-radius:7px;
+       padding:6px 9px;width:150px}
+  #status{color:var(--amber);font-size:12px;min-width:140px}
+
+  /* ── nav ── */
+  .nav{position:fixed;top:50%;transform:translateY(-50%);z-index:40;background:rgba(35,36,44,.7);
+       color:#fff;border:1px solid #3a3b45;width:42px;height:60px;border-radius:10px;font-size:22px;
+       cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+  .nav:hover{background:var(--amber);color:#1a1206}
+  #prev{left:14px}#next{right:14px}
+  #dots{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:40;display:flex;gap:7px}
+  #dots span{width:8px;height:8px;border-radius:50%;background:#3a3b45;cursor:pointer;transition:.15s}
+  #dots span.on{background:var(--amber);width:22px;border-radius:5px}
+
+  /* ── typography ── */
+  .eyebrow{color:var(--amber);font-size:18px;font-weight:700;letter-spacing:3px}
+  h1.big{color:var(--txt);font-size:62px;font-weight:800;line-height:1.05;margin:14px 0 18px}
+  h2{color:var(--txt);font-size:38px;font-weight:800}
+  .lead{color:var(--mut);font-size:20px;line-height:1.5}
+  .sub{color:#C9CAD2;font-size:15px;font-style:italic}
+
+  /* corners */
+  .corner{position:absolute;width:34px;height:34px;border:2px solid var(--amber)}
+  .c-tl{top:40px;left:48px;border-right:0;border-bottom:0}
+  .c-tr{top:40px;right:48px;border-left:0;border-bottom:0}
+  .c-bl{bottom:40px;left:48px;border-right:0;border-top:0}
+  .c-br{bottom:40px;right:48px;border-left:0;border-top:0}
+
+  /* overview / summary cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px}
+  .card{background:var(--card);border-radius:14px;padding:30px 28px;box-shadow:0 6px 22px rgba(0,0,0,.35)}
+  .badge{width:48px;height:48px;border-radius:50%;background:var(--amber);color:var(--bg);
+         font-family:var(--serif);font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .card h3{color:var(--txt);font-size:23px;margin:18px 0 12px}
+  .card p{color:var(--mut);font-size:15px;line-height:1.55}
+
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}
+  .chk{background:var(--card);border-radius:13px;padding:24px 26px;box-shadow:0 6px 22px rgba(0,0,0,.35)}
+  .chk .row{display:flex;align-items:center;gap:16px}
+  .chk .n{width:42px;height:42px;border-radius:50%;border:2px solid var(--amber);color:var(--amber);
+          font-family:var(--serif);font-size:21px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .chk h4{color:var(--txt);font-size:20px}
+  .chk p{color:var(--mut);font-size:14.5px;line-height:1.5;margin-top:13px}
+  .closing{position:absolute;left:60px;right:60px;bottom:46px;text-align:center;color:var(--amber);
+           font-style:italic;font-size:16px}
+
+  /* table */
+  table{width:100%;border-collapse:separate;border-spacing:0 0;margin-top:18px;font-size:14px}
+  th{background:var(--amber);color:var(--bg);font-weight:700;padding:11px 12px}
+  th:first-child{border-radius:8px 0 0 0}th:last-child{border-radius:0 8px 0 0}
+  td{padding:11px 12px;color:var(--txt);vertical-align:middle;border-bottom:2px solid var(--bg)}
+  tr.odd td{background:var(--card)} tr.even td{background:var(--card2)}
+  td.ctr{text-align:center} td.mut{color:var(--mut)} td.nm{font-weight:700;text-align:center}
+  td .en{color:var(--mut);font-weight:400;font-size:12px}
+  .dotF{color:var(--amber);letter-spacing:2px} .dotE{color:var(--mut2);letter-spacing:2px}
+
+  /* angle slide */
+  .angle{display:grid;grid-template-columns:560px 1fr;gap:40px;height:100%;align-items:center}
+  .visual{position:relative;width:560px}
+  .vbox{position:relative;width:560px;height:447px;background:var(--card);border-radius:12px;overflow:hidden;
+        box-shadow:0 8px 26px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+  .vbox svg{width:100%;height:100%;display:block}
+  .vbox img{width:100%;height:100%;object-fit:cover;display:none}
+  .vbox.has-photo img{display:block}
+  .vbox.has-photo .diagLarge{display:none}
+  /* inset (camera position key), shown only when photo present */
+  .inset{position:absolute;right:14px;bottom:14px;width:188px;height:128px;border:3px solid var(--amber);
+         border-radius:4px;overflow:hidden;display:none;background:var(--card)}
+  .vbox.has-photo .inset{display:block}
+  .inset .cap{position:absolute;top:0;left:0;right:0;background:var(--amber);color:var(--bg);
+        font-size:10px;font-weight:700;text-align:center;padding:2px 0;z-index:2}
+  .inset svg{width:100%;height:100%}
+  .vcap{text-align:center;color:var(--mut2);font-size:13px;margin-top:12px}
+  .vspin{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+         background:rgba(15,16,20,.7);color:var(--amber);font-size:13px;z-index:3}
+  .vbox.loading .vspin{display:flex}
+
+  .info .idx{font-family:var(--serif);font-size:30px;color:var(--amber);font-weight:700}
+  .info .kr{font-size:40px;color:var(--txt);font-weight:800;margin-left:14px}
+  .info .en{font-family:var(--serif);font-style:italic;color:var(--mut);font-size:17px;margin:6px 0 18px}
+  .posbar{background:var(--card2);border-radius:9px;padding:14px 18px;font-size:14px;color:var(--txt)}
+  .posbar b{color:var(--amber)}
+  .lbl{color:var(--amber);font-weight:700;font-size:15px;margin:22px 0 10px}
+  .info ul{list-style:none} .info li{color:var(--txt);font-size:16px;margin:9px 0;padding-left:18px;position:relative}
+  .info li:before{content:"•";color:var(--amber);position:absolute;left:0}
+  .use{color:var(--mut);font-size:14.5px;line-height:1.55}
+  .tension{display:flex;align-items:center;gap:12px;margin-top:22px}
+  .tension .t{color:var(--mut);font-weight:700;font-size:14px}
+  .tension i{width:15px;height:15px;border-radius:50%;display:inline-block;margin-right:7px}
+  .tension i.f{background:var(--amber)} .tension i.e{border:1.5px solid var(--mut2)}
+</style>
+</head>
+<body>
+<div id="bar">
+  <b>카메라 앵글의 심리학</b>
+  <span id="status"></span>
+  <span class="sp"></span>
+  <input id="keyField" placeholder="Grok API Key (xai-...)" />
+  <button id="genBtn" class="primary">🎨 예시 이미지 생성</button>
+  <span><span id="cur">1</span> / <span id="tot">10</span></span>
+</div>
+
+<div id="deck"><div id="stage"></div></div>
+
+<button id="prev" class="nav">‹</button>
+<button id="next" class="nav">›</button>
+<div id="dots"></div>
+
+<script>
+/* ============ DATA ============ */
+const PREFILL_KEY = "xai-NuLU1h9yVYGKLZE4Y3yNfAoTzXWkOGMHj1tA9pKUncaTNPaTsDq522ipJAhK2h3kAqtFn0HVIUny2fcc";
+
+const ANGLES = [
+ {id:"eye",idx:"01",kr:"아이 레벨",en:"Eye-Level Shot",pos:"카메라를 인물의 눈높이에 수평으로 둔다",
+  eff:["중립적이고 평등한 시선","현실감과 자연스러운 몰입","관객이 인물과 '동등하게' 마주봄"],
+  use:"일상 대화, 인터뷰, 객관적 서술. 특수 앵글의 효과를 살리는 '기준점' 역할.",lvl:2,
+  prompt:"Cinematic eye-level shot, camera at the subject's eye height, two ordinary people standing facing each other at equal height, calm neutral natural perspective, soft realistic daylight, photographic, 16:9, no text"},
+ {id:"low",idx:"02",kr:"로우 앵글",en:"Low Angle / 앙각",pos:"인물 아래에서 위를 올려다본다",
+  eff:["권위 · 위압 · 우월감","인물이 크고 강하게 보임","영웅의 위엄, 혹은 빌런의 공포"],
+  use:"강자의 등장, 권력 과시, 승리의 순간. 올려다보는 시선이 인물을 지배자로 만든다.",lvl:4,
+  prompt:"Dramatic low-angle shot looking steeply up at one confident powerful person standing tall, towering imposing dominant, bright sky behind, heroic cinematic lighting, photographic, 16:9, no text"},
+ {id:"high",idx:"03",kr:"하이 앵글",en:"High Angle / 부감",pos:"인물 위에서 아래를 내려다본다",
+  eff:["약함 · 취약함 · 고립","인물이 작고 무력하게 보임","관객의 동정과 연민 유발"],
+  use:"패배 · 위기 · 좌절의 장면, 약자 표현. 내려다보는 시선이 인물을 위축시킨다.",lvl:3,
+  prompt:"High-angle shot looking down from above at a single small vulnerable person sitting alone on the floor, isolated powerless, cold moody cinematic lighting, photographic, 16:9, no text"},
+ {id:"bird",idx:"04",kr:"버드 아이 뷰",en:"Bird's-Eye View / 조감",pos:"인물의 수직 상공에서 직하방으로 본다",
+  eff:["신(神)의 시점 · 운명감","상황 전체의 객관적 조망","광활함 속 개인의 고립과 무력"],
+  use:"사건 현장 전경, 군중 속 홀로 선 인물. 인간을 '체스판의 말'처럼 관조하게 한다.",lvl:3,
+  prompt:"Top-down bird's eye view directly overhead, one lone person standing alone at center of a vast empty plaza, god's eye aerial perspective, geometric, cinematic, photographic, 16:9, no text"},
+ {id:"worm",idx:"05",kr:"웜즈 아이 뷰",en:"Worm's-Eye View",pos:"지면에 가까운 극단적 저점에서 수직으로 올려다본다",
+  eff:["극단적 위압과 거대함","비현실적 · 압도적 스케일","경외 혹은 절대적 공포"],
+  use:"거대 괴수, 절대 권력자, 마천루. 로우 앵글을 극한까지 밀어붙인 강조 연출.",lvl:5,
+  prompt:"Extreme worm's eye view from the ground looking straight up at towering colossal skyscrapers converging toward sky, overwhelming monumental scale, dramatic cinematic, photographic, 16:9, no text"},
+ {id:"dutch",idx:"06",kr:"더치 앵글",en:"Dutch Angle / 경사",pos:"카메라(프레임) 자체를 비스듬히 기울인다",
+  eff:["불안 · 혼란 · 긴장","세계의 균형이 무너진 느낌","광기 · 환각 · 심리적 붕괴"],
+  use:"공포·스릴러의 긴박한 순간, 반전 직전. 가장 강력하게 불안을 각인시키는 앵글.",lvl:5,
+  prompt:"Dutch angle canted tilted shot of a tense anxious person in a dim corridor, strongly diagonal off-balance horizon, disorienting thriller mood, dramatic shadows, cinematic, photographic, 16:9, no text"}
+];
+
+/* ============ SVG SCHEMATIC (inline, always renders) ============ */
+function schematic(kind){
+  const W=820,H=560,GROUND="#3A3B45",PERSON="#E4E4E8",CAM="#F2B544",CAMD="#C8901F",SIGHT="#F2B544",LABEL="#8B8C98",BGc="#1F2027";
+  const person=t=>`<g transform="${t}"><circle cx="0" cy="-152" r="19" fill="${PERSON}"/><path d="M -22 -40 C -22 -110,-16 -132,0 -132 C 16 -132,22 -110,22 -40 Z" fill="${PERSON}"/><rect x="-22" y="-44" width="16" height="48" rx="7" fill="${PERSON}"/><rect x="6" y="-44" width="16" height="48" rx="7" fill="${PERSON}"/></g>`;
+  const cam=(cx,cy,a)=>`<g transform="translate(${cx} ${cy}) rotate(${a})"><rect x="-26" y="-30" width="14" height="60" rx="4" fill="${CAMD}"/><rect x="-30" y="-20" width="54" height="40" rx="6" fill="${CAM}"/><rect x="-14" y="-32" width="22" height="12" rx="3" fill="${CAM}"/><circle cx="30" cy="0" r="16" fill="${CAMD}"/><circle cx="30" cy="0" r="9" fill="#2A2B33"/></g>`;
+  const sl=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${SIGHT}" stroke-width="3.5" stroke-dasharray="9 9" marker-end="url(#ar)" opacity=".9"/>`;
+  const gy=470,px=560,ground=`<line x1="40" y1="${gy}" x2="${W-40}" y2="${gy}" stroke="${GROUND}" stroke-width="4"/>`;
+  let inner="";
+  if(kind==="eye")  inner=ground+person(`translate(${px} ${gy})`)+cam(180,gy-152,0)+sl(212,gy-152,px-40,gy-152);
+  if(kind==="low")  inner=ground+person(`translate(${px} ${gy})`)+cam(210,gy-28,-34)+sl(238,gy-46,px-26,gy-120);
+  if(kind==="high") inner=ground+person(`translate(${px} ${gy})`)+cam(205,120,36)+sl(232,138,px-28,gy-150);
+  if(kind==="bird") inner=ground+person(`translate(${px} ${gy})`)+cam(px,90,90)+sl(px,122,px,gy-178);
+  if(kind==="worm") inner=ground+person(`translate(${px} ${gy})`)+cam(px-150,gy-14,-78)+sl(px-140,gy-40,px-14,gy-150);
+  if(kind==="dutch")inner=`<g transform="rotate(-15 410 280)"><line x1="40" y1="${gy}" x2="${W-40}" y2="${gy}" stroke="${GROUND}" stroke-width="4"/>${person(`translate(${px} ${gy})`)}</g>`+cam(190,gy-152,0)+sl(218,gy-152,px-60,gy-168)+`<g stroke="${LABEL}" stroke-width="2.5" fill="none" opacity=".5" stroke-dasharray="6 7"><rect x="70" y="60" width="680" height="420" transform="rotate(-15 410 270)"/></g>`;
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${SIGHT}"/></marker></defs><rect width="${W}" height="${H}" fill="${BGc}"/>${inner}</svg>`;
+}
+
+/* ============ BUILD SLIDES ============ */
+const stage=document.getElementById('stage');
+function el(html){const d=document.createElement('div');d.innerHTML=html.trim();return d.firstElementChild;}
+const slides=[];
+function add(node){node.classList.add('slide');stage.appendChild(node);slides.push(node);}
+
+// 1 TITLE
+add(el(`<div>
+  <div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+  <div style="position:absolute;left:70px;top:230px;right:70px">
+    <div class="eyebrow">영상 · 웹툰 연출 교육</div>
+    <h1 class="big">카메라 앵글의 심리학</h1>
+    <div class="lead">앵글이 만드는 긴장감과 서사 — 시점(視點)에 따른 연출 효과 정리</div>
+    <div class="sub" style="margin-top:14px">위에서? 아래에서? 카메라의 높이는 곧 인물 사이의 '권력'을 말한다.</div>
+  </div></div>`));
+
+// 2 OVERVIEW
+const ov=[["시선 = 권력","올려다보면 위압, 내려다보면 우월. 앵글 하나로 인물의 강약 관계가 즉시 규정된다."],
+ ["무의식적 감정 유도","대사 없이도 불안·경외·연민 같은 감정을 관객의 몸이 먼저 느끼게 만든다."],
+ ["서사 리듬 조절","평범한 컷과 특수 앵글의 '대비'가 긴장의 고조와 이완을 설계한다."]];
+add(el(`<div>
+  <h2>왜 '앵글'이 서사를 바꾸는가</h2>
+  <div class="lead" style="margin-top:16px;max-width:1080px">관객(독자)은 카메라를 무의식적으로 '자신의 눈'으로 받아들인다. 그래서 카메라의 높이와 기울기는 곧 인물을 바라보는 감정의 방향이 된다.</div>
+  <div class="cards">${ov.map((c,i)=>`<div class="card"><div class="badge">${i+1}</div><h3>${c[0]}</h3><p>${c[1]}</p></div>`).join("")}</div>
+</div>`));
+
+// 3 TABLE
+const rows=[["아이 레벨","Eye-Level","인물 눈높이 (수평)","중립 · 평등 · 현실감 / 관객의 공감","일상 대화 · 객관적 서술",2],
+ ["로우 앵글","Low / 앙각","인물 아래 → 위로","권위 · 위압 · 우월 / 영웅·공포의 대상","강자 등장 · 권력 과시",4],
+ ["하이 앵글","High / 부감","인물 위 → 아래로","약함 · 취약 · 고립 / 동정·연민","패배 · 위기 · 약자",3],
+ ["버드 아이","Bird's-Eye / 조감","수직 상공 (직하방)","운명 · 신의 시점 / 객관화·고립","상황 조망 · 무력한 개인",3],
+ ["웜즈 아이","Worm's-Eye","지면 → 수직 위","극단적 위압 · 거대함 / 비현실·압도","절대적 강자 · 경외·공포",5],
+ ["더치 앵글","Dutch / 경사","카메라 기울임","불안 · 혼란 · 광기 / 균형 붕괴","긴장 고조 · 심리 붕괴",5]];
+const dots=l=>`<span class="dotF">${"●".repeat(l)}</span><span class="dotE">${"●".repeat(5-l)}</span>`;
+add(el(`<div>
+  <h2 style="font-size:32px">앵글 × 연출 효과 상관표</h2>
+  <div style="color:var(--mut);font-size:14px;margin-top:8px">카메라 위치가 만드는 심리·서사 효과와 긴장감의 상관관계</div>
+  <table>
+   <tr><th>앵글</th><th>카메라 위치</th><th>심리 · 연출 효과</th><th>서사 활용</th><th>긴장감</th></tr>
+   ${rows.map((r,i)=>`<tr class="${i%2?'even':'odd'}">
+     <td class="nm">${r[0]}<div class="en">${r[1]}</div></td>
+     <td class="ctr mut">${r[2]}</td><td>${r[3]}</td><td class="mut">${r[4]}</td>
+     <td class="ctr">${dots(r[5])}</td></tr>`).join("")}
+  </table>
+  <div style="color:var(--mut2);font-size:11px;margin-top:14px">● 긴장감 강도 (5단계)</div>
+</div>`));
+
+// 4-9 ANGLES
+ANGLES.forEach(a=>{
+  add(el(`<div class="angle">
+    <div class="visual">
+      <div class="vbox" id="vbox-${a.id}">
+        <div class="diagLarge" style="width:100%;height:100%">${schematic(a.id)}</div>
+        <img id="img-${a.id}" alt="${a.kr} 예시">
+        <div class="inset"><div class="cap">카메라 위치</div>${schematic(a.id)}</div>
+        <div class="vspin">Grok 이미지 생성 중…</div>
+      </div>
+      <div class="vcap" id="vcap-${a.id}">카메라 위치 다이어그램</div>
+    </div>
+    <div class="info">
+      <div><span class="idx">${a.idx}</span><span class="kr">${a.kr}</span></div>
+      <div class="en">${a.en}</div>
+      <div class="posbar"><b>카메라 위치 &nbsp;</b>${a.pos}</div>
+      <div class="lbl">심리 · 연출 효과</div>
+      <ul>${a.eff.map(e=>`<li>${e}</li>`).join("")}</ul>
+      <div class="lbl">서사 활용</div>
+      <div class="use">${a.use}</div>
+      <div class="tension"><span class="t">긴장감</span>
+        ${[1,2,3,4,5].map(n=>`<i class="${n<=a.lvl?'f':'e'}"></i>`).join("")}</div>
+    </div>
+  </div>`));
+});
+
+// 10 SUMMARY
+const ck=[["컷의 '목적'부터 정하라","이 컷에서 인물은 강한가, 약한가? 무엇을 느끼게 할 것인가? 목적이 앵글을 결정한다."],
+ ["권력관계가 바뀌면 앵글도 바꿔라","대결 장면에선 강자=로우 앵글, 약자=하이 앵글을 교차시켜 우열을 시각화한다."],
+ ["긴장의 정점엔 극단 앵글을","공포·반전의 클라이맥스엔 더치·웜즈 앵글, 일상·이완 장면엔 아이 레벨을 쓴다."],
+ ["'남발'보다 '대비'로 살려라","평범한 컷이 충분히 있어야 특수 앵글 한 컷이 강렬해진다. 절제가 곧 임팩트다."]];
+add(el(`<div>
+  <h2 style="font-size:32px">실전 적용 — 웹툰 · 콘티 체크리스트</h2>
+  <div class="checks">${ck.map((c,i)=>`<div class="chk"><div class="row"><div class="n">${i+1}</div><h4>${c[0]}</h4></div><p>${c[1]}</p></div>`).join("")}</div>
+  <div class="closing">앵글은 기술이 아니라 '연출의 언어'다 — 무엇을 말할지 정하면, 카메라가 답한다.</div>
+</div>`));
+
+/* ============ NAV ============ */
+let cur=0;
+const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+const dotsWrap=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('span');d.onclick=()=>go(i);dotsWrap.appendChild(d);});
+function go(i){cur=(i+tot)%tot;
+  slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  [...dotsWrap.children].forEach((d,k)=>d.classList.toggle('on',k===cur));
+  document.getElementById('cur').textContent=cur+1;}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(cur+1);if(e.key==='ArrowLeft')go(cur-1);});
+go(0);
+
+/* ============ SCALE TO FIT ============ */
+function fit(){const s=Math.min(window.innerWidth/1280,(window.innerHeight-46)/720);
+  stage.style.transform=`scale(${s})`;}
+window.addEventListener('resize',fit);fit();
+
+/* ============ GROK IMAGE GEN (client-side) ============ */
+const keyField=document.getElementById('keyField');
+keyField.value=PREFILL_KEY;
+const statusEl=document.getElementById('status');
+const genBtn=document.getElementById('genBtn');
+
+async function grok(prompt,key){
+  const r=await fetch("https://api.x.ai/v1/images/generations",{
+    method:"POST",
+    headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+    body:JSON.stringify({model:"grok-2-image",prompt,n:1,response_format:"b64_json"})
+  });
+  if(!r.ok){throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,80));}
+  const j=await r.json();const d=(j.data||[])[0]||{};
+  if(d.b64_json) return "data:image/jpeg;base64,"+d.b64_json;
+  if(d.url) return d.url;
+  throw new Error("no image in response");
+}
+
+genBtn.onclick=async()=>{
+  const key=keyField.value.trim();
+  if(!key){statusEl.textContent="API 키를 입력하세요";return;}
+  genBtn.disabled=true;
+  let ok=0,fail=0;
+  for(let i=0;i<ANGLES.length;i++){
+    const a=ANGLES[i];
+    statusEl.textContent=`생성 중 ${i+1}/${ANGLES.length} · ${a.kr}`;
+    const box=document.getElementById('vbox-'+a.id);
+    box.classList.add('loading');
+    try{
+      const src=await grok(a.prompt,key);
+      document.getElementById('img-'+a.id).src=src;
+      box.classList.add('has-photo');
+      document.getElementById('vcap-'+a.id).textContent="예시 — "+a.kr+" 연출 장면 (Grok 생성)";
+      ok++;
+    }catch(err){
+      fail++; console.warn(a.kr,err.message);
+      if(i===0) statusEl.dataset.err=err.message;
+    }finally{ box.classList.remove('loading'); }
+  }
+  genBtn.disabled=false;
+  if(ok&&!fail) statusEl.textContent=`완료 ✓ ${ok}장 생성`;
+  else if(ok) statusEl.textContent=`${ok}장 성공 · ${fail}장 실패`;
+  else{
+    statusEl.textContent="생성 실패 — 도식으로 표시 중";
+    alert("Grok 이미지 호출이 실패했습니다.\n\n원인(추정): 브라우저에서 api.x.ai 직접 호출이 CORS 정책으로 차단됨.\n에러: "+(statusEl.dataset.err||"")+"\n\n대안: 첨부한 node 스크립트(build_with_grok.js)를 로컬에서 실행하면 동일한 이미지를 PPTX에 넣을 수 있습니다. 카메라 위치 도식은 현재도 정상 표시됩니다.");
+  }
+};
+</script>
+</body>
+</html>

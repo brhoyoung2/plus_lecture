@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사건의 5대 요소</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0D;
+    --panel:#16161A;
+    --text:#F3F1EC;
+    --muted:#85807A;
+    --hair:rgba(243,241,236,.14);
+    --c-goal:#3FC8BE;
+    --c-conflict:#FF6F4D;
+    --c-choice:#F4B23E;
+    --c-change:#74D06C;
+    --c-expand:#BE8CE6;
+    --display:"Black Han Sans",sans-serif;
+    --sans:"Noto Sans KR",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--sans);
+    background:#000;
+    color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;overflow:hidden;
+  }
+
+  .slide{
+    width:min(100vw, calc(100vh * 16 / 9));
+    height:min(100vh, calc(100vw * 9 / 16));
+    aspect-ratio:16/9;
+    container-type:size;
+    background:var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(190,140,230,.10), transparent 36%),
+      radial-gradient(circle at 92% 94%, rgba(63,200,190,.09), transparent 40%);
+    position:relative;overflow:hidden;
+  }
+
+  .pad{
+    position:absolute;inset:0;
+    padding:5cqh 5cqw;
+    display:flex;flex-direction:column;
+  }
+
+  /* ── Header ── */
+  .eyebrow{
+    font-size:1.5cqh;font-weight:700;letter-spacing:.34em;
+    color:var(--muted);text-transform:uppercase;
+    display:flex;align-items:center;gap:1.4cqw;margin-bottom:1.8cqh;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--hair)}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:3cqw;margin-bottom:3.4cqh}
+  h1{
+    font-family:var(--display);font-weight:400;
+    font-size:8.4cqh;line-height:.95;letter-spacing:.01em;
+  }
+  .lead{
+    font-size:2cqh;font-weight:400;color:#cbc6bd;
+    max-width:42ch;line-height:1.6;text-align:right;flex:none;
+  }
+  .lead b{font-weight:700;color:var(--text)}
+
+  /* ── Flow ── */
+  .flow{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:1.4cqw}
+  .card{
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--hair);
+    border-top:.42cqh solid var(--accent);
+    border-radius:.5cqh;
+    padding:2.6cqh 1.5cqw;
+    display:flex;flex-direction:column;
+    opacity:0;transform:translateY(2cqh);
+    animation:rise .5s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  .num{
+    font-family:var(--display);font-weight:400;
+    font-size:5cqh;line-height:1;color:var(--accent);margin-bottom:1.6cqh;
+  }
+  .kor{font-family:var(--display);font-weight:400;font-size:4.6cqh;line-height:1;margin-bottom:.6cqh}
+  .eng{
+    font-size:1.4cqh;font-weight:700;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:2cqh;
+  }
+  .mean{
+    font-size:1.95cqh;font-weight:500;color:#d8d3ca;
+    padding-bottom:1.8cqh;margin-bottom:1.8cqh;
+    border-bottom:1px dashed var(--hair);
+  }
+  .q-label{font-size:1.25cqh;font-weight:700;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:.7cqh}
+  .q{font-size:1.85cqh;font-weight:500;line-height:1.5;color:var(--text);margin-top:auto}
+
+  /* arrow between cards */
+  .card:not(:first-child)::before{
+    content:"";position:absolute;left:-.95cqw;top:50%;
+    width:1.5cqh;height:1.5cqh;background:var(--bg);
+    border-top:1px solid var(--muted);border-right:1px solid var(--muted);
+    transform:translateY(-50%) rotate(45deg);z-index:3;
+  }
+
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  .card:nth-child(1){animation-delay:.06s}
+  .card:nth-child(2){animation-delay:.16s}
+  .card:nth-child(3){animation-delay:.26s}
+  .card:nth-child(4){animation-delay:.36s}
+  .card:nth-child(5){animation-delay:.46s}
+
+  /* ── Loop ── */
+  .loop{
+    display:flex;align-items:center;gap:1.6cqw;margin-top:3cqh;
+    background:linear-gradient(90deg, rgba(190,140,230,.14), transparent);
+    border-left:.42cqh solid var(--c-expand);
+    border-radius:.5cqh;padding:2cqh 2cqw;
+    opacity:0;animation:rise .5s ease .6s forwards;
+  }
+  .loop-icon{flex:none;font-size:4cqh;color:var(--c-expand);line-height:1}
+  .loop p{font-size:1.95cqh;color:#cbc6bd}
+  .loop b{color:var(--c-expand);font-weight:700}
+  .loop .ko-acc{color:var(--text);font-weight:700}
+
+  @media(prefers-reduced-motion:reduce){.card,.loop{animation:none;opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="slide">
+ <div class="pad">
+
+  <div class="eyebrow">이야기 구조 · STORY STRUCTURE</div>
+  <div class="head">
+    <h1>사건의 5대 요소</h1>
+    <p class="lead">하나의 사건은 다섯 개의 톱니로 굴러간다. <b>목표</b>에서 출발해 갈등·선택·변화를 지나고, <b>확장</b>이 다시 더 큰 사건을 부른다.</p>
+  </div>
+
+  <div class="flow">
+
+    <div class="card" style="--accent:var(--c-goal)">
+      <div class="num">01</div>
+      <div class="kor">목표</div>
+      <div class="eng">Goal</div>
+      <div class="mean">원하는 것</div>
+      <div class="q-label">작가의 질문</div>
+      <div class="q">이 장면에서 주인공은 무엇을 원하는가?</div>
+    </div>
+
+    <div class="card" style="--accent:var(--c-conflict)">
+      <div class="num">02</div>
+      <div class="kor">갈등</div>
+      <div class="eng">Conflict</div>
+      <div class="mean">방해 요소</div>
+      <div class="q-label">작가의 질문</div>
+      <div class="q">그 바람을 가로막는 것은 무엇인가?</div>
+    </div>
+
+    <div class="card" style="--accent:var(--c-choice)">
+      <div class="num">03</div>
+      <div class="kor">선택</div>
+      <div class="eng">Choice</div>
+      <div class="mean">결정과 행동</div>
+      <div class="q-label">작가의 질문</div>
+      <div class="q">주인공은 어떤 결정을 내리고 움직이는가?</div>
+    </div>
+
+    <div class="card" style="--accent:var(--c-change)">
+      <div class="num">04</div>
+      <div class="kor">변화</div>
+      <div class="eng">Change</div>
+      <div class="mean">성장 또는 변화</div>
+      <div class="q-label">작가의 질문</div>
+      <div class="q">그 행동의 결과로 무엇이 달라졌는가?</div>
+    </div>
+
+    <div class="card" style="--accent:var(--c-expand)">
+      <div class="num">05</div>
+      <div class="kor">확장</div>
+      <div class="eng">Expansion</div>
+      <div class="mean">더 큰 사건으로 연결</div>
+      <div class="q-label">작가의 질문</div>
+      <div class="q">이 변화가 어떤 더 큰 사건을 불러오는가?</div>
+    </div>
+
+  </div>
+
+  <div class="loop">
+    <div class="loop-icon">↻</div>
+    <p><b>확장</b>은 끝이 아니다. 방금의 변화가 새로운, 더 큰 <span class="ko-acc">목표</span>가 되어 다음 사건의 톱니를 다시 돌린다 — 이야기는 이렇게 점점 커진다.</p>
+  </div>
+
+ </div>
+</div>
+</body>
+</html>
