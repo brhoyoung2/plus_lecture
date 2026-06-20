@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캐릭터의 5대 축</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0E12;
+    --card:#17171D;
+    --card-line:rgba(255,255,255,.07);
+    --txt:#F3F2F0;
+    --txt-soft:#9A98A2;
+    --txt-faint:#62616B;
+    --c1:#2DD4BF; /* 성장 */
+    --c2:#F4604C; /* 능력 */
+    --c3:#F5B92E; /* 결핍 */
+    --c4:#4ADE80; /* 개성 */
+    --c5:#A78BFA; /* 관계 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:#000;display:grid;place-items:center;
+    font-family:"Noto Sans KR",sans-serif;color:var(--txt);overflow:hidden;
+  }
+  .slide{
+    width:min(100vw,177.78vh);height:min(56.25vw,100vh);
+    background:
+      radial-gradient(120vh 90vh at 0% 0%, rgba(120,80,200,.16), transparent 60%),
+      radial-gradient(120vh 90vh at 100% 100%, rgba(45,212,191,.06), transparent 55%),
+      var(--bg);
+    padding:clamp(2.4vh,4vh,5vh) clamp(2.4vw,3.4vw,4.6vw);
+    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+
+  /* ── 헤더 ── */
+  .head{display:flex;justify-content:space-between;align-items:flex-start;gap:3vw;margin-bottom:1vh}
+  .eyebrow{
+    display:flex;align-items:center;gap:1.4vw;
+    font-weight:700;letter-spacing:.32em;font-size:1.5vh;color:var(--txt-soft);
+    text-transform:uppercase;margin-bottom:1.6vh;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--txt-faint),transparent);width:14vw}
+  h1{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:7vh;line-height:.95;letter-spacing:-.01em}
+  .lede{
+    text-align:right;color:var(--txt-soft);font-weight:400;
+    font-size:1.95vh;line-height:1.55;max-width:34ch;padding-top:.6vh;
+  }
+  .lede b{color:var(--txt);font-weight:700}
+
+  /* ── 카드 5열 ── */
+  .grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(1vw,1.5vw,2vw);margin-top:2.4vh;position:relative}
+  .card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:8px;
+    border-top:3px solid var(--ac);
+    padding:clamp(1.8vh,2.6vh,3.2vh) clamp(1vw,1.3vw,1.7vw);
+    display:flex;flex-direction:column;position:relative;
+    opacity:0;transform:translateY(2.6vh);
+    animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .card:nth-child(1){--ac:var(--c1);animation-delay:.05s}
+  .card:nth-child(2){--ac:var(--c2);animation-delay:.14s}
+  .card:nth-child(3){--ac:var(--c3);animation-delay:.23s}
+  .card:nth-child(4){--ac:var(--c4);animation-delay:.32s}
+  .card:nth-child(5){--ac:var(--c5);animation-delay:.41s}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* 카드 사이 화살표 */
+  .card:not(:last-child)::after{
+    content:"›";position:absolute;right:calc(-1 * clamp(1vw,1.5vw,2vw) / 2);
+    top:58%;transform:translate(50%,-50%);
+    font-family:"Noto Sans KR";font-weight:300;font-size:3.2vh;color:var(--txt-faint);
+    z-index:2;line-height:1;
+  }
+
+  .num{font-family:"Black Han Sans",sans-serif;font-size:4.4vh;line-height:1;color:var(--ac);margin-bottom:1vh}
+  .ko{font-family:"Black Han Sans",sans-serif;font-size:5vh;line-height:1;letter-spacing:-.01em}
+  .eng{font-weight:900;font-size:1.6vh;letter-spacing:.16em;text-transform:uppercase;color:var(--ac);margin-top:1.2vh}
+  .meaning{font-weight:500;font-size:2vh;color:var(--txt);margin-top:2.2vh}
+  .divider{height:1px;background:var(--card-line);margin:2vh 0 1.6vh}
+  .q-label{font-size:1.4vh;letter-spacing:.2em;color:var(--txt-faint);font-weight:700}
+  .question{margin-top:auto;font-weight:500;font-size:1.95vh;line-height:1.45;color:var(--txt-soft)}
+
+  /* ── 하단 요약 바 ── */
+  .recap{
+    margin-top:2.6vh;display:flex;align-items:center;gap:1.6vw;
+    background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);
+    border-left:3px solid var(--c5);border-radius:8px;
+    padding:1.8vh 2vw;
+    opacity:0;animation:rise .6s ease forwards .55s;
+  }
+  .recap .ic{font-size:2.6vh;color:var(--c5);line-height:1}
+  .recap p{font-size:1.85vh;color:var(--txt-soft);font-weight:500;line-height:1.4}
+  .recap b{color:var(--txt);font-weight:900}
+
+  @media (prefers-reduced-motion:reduce){
+    .card,.recap{animation:none;opacity:1;transform:none}
+  }
+  /* 일반 고딕 볼드로 통일 */
+  h1,.num,.ko{font-family:'Noto Sans KR',sans-serif;font-weight:700 !important;letter-spacing:-.01em;}
+</style>
+</head>
+<body>
+<a href="index.html" class="lec-back" style="position:fixed;top:14px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:7px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:#f3f1ec;background:rgba(18,18,26,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:9px 15px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.45)">← 교안으로</a>
+  <section class="slide">
+    <div class="head">
+      <div>
+        <div class="eyebrow">캐릭터 설계 · CHARACTER FRAMEWORK</div>
+        <h1>캐릭터의 <span style="color:var(--c5)">5</span>대 축</h1>
+      </div>
+      <p class="lede">한 인물은 다섯 축으로 빚어진다. <b>결핍</b>에서 갈망이 태어나 능력·개성을 거치고, <b>관계</b> 속에서 그 모두가 증명된다.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="num">01</div>
+        <div class="ko">성장</div>
+        <div class="eng">Growth</div>
+        <div class="meaning">더 나아지고 강해지고 싶다</div>
+        <div class="divider"></div>
+        <div class="q-label">작가의 질문</div>
+        <p class="question">이 인물은 어디까지 나아가고 싶은가?</p>
+      </article>
+
+      <article class="card">
+        <div class="num">02</div>
+        <div class="ko">능력</div>
+        <div class="eng">Power</div>
+        <div class="meaning">특별한 재능이나 힘</div>
+        <div class="divider"></div>
+        <div class="q-label">작가의 질문</div>
+        <p class="question">이 인물만이 해낼 수 있는 것은?</p>
+      </article>
+
+      <article class="card">
+        <div class="num">03</div>
+        <div class="ko">결핍</div>
+        <div class="eng">Flaw</div>
+        <div class="meaning">부족함, 상처, 약점</div>
+        <div class="divider"></div>
+        <div class="q-label">작가의 질문</div>
+        <p class="question">이 인물이 감추고 싶은 약점은?</p>
+      </article>
+
+      <article class="card">
+        <div class="num">04</div>
+        <div class="ko">개성</div>
+        <div class="eng">Identity</div>
+        <div class="meaning">나만의 특징과 매력</div>
+        <div class="divider"></div>
+        <div class="q-label">작가의 질문</div>
+        <p class="question">한눈에 이 인물을 알아보게 하는 것은?</p>
+      </article>
+
+      <article class="card">
+        <div class="num">05</div>
+        <div class="ko">관계</div>
+        <div class="eng">Relationship</div>
+        <div class="meaning">사람들과의 연결</div>
+        <div class="divider"></div>
+        <div class="q-label">작가의 질문</div>
+        <p class="question">이 인물은 누구와 이어져 있는가?</p>
+      </article>
+    </div>
+
+    <div class="recap">
+      <span class="ic">◆</span>
+      <p><b>결핍</b>이 성장을 끌어내고, 능력과 개성이 인물을 빚으며, <b>관계</b>가 그 모두를 시험한다 — 다섯 축이 맞물릴 때 인물이 비로소 살아 움직인다.</p>
+    </div>
+  </section>
+</body>
+</html>

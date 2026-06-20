@@ -1,0 +1,4 @@
+node_modules/
+.vercel/
+_p*.png
+_intro_text.txt
