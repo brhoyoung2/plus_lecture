@@ -175,98 +175,110 @@
       <p><b>결핍</b>이 성장을 끌어내고, 능력과 개성이 인물을 빚으며, <b>관계</b>가 그 모두를 시험한다 — 다섯 축이 맞물릴 때 인물이 비로소 살아 움직인다.</p>
     </div>
   </section>
-<!-- ===== CASE 예시 (남성향/여성향 인기작) ===== -->
+<!-- ===== CASE 예시 (데이터 기반 페이지네이션) ===== -->
+<script src="assets/case-data.js"></script>
 <style>
   .case-layer{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:#0a0a10;font-family:'Noto Sans KR',sans-serif;color:#f3f1ec;}
   .case-layer.active{display:flex;}
   .case-stage{position:relative;width:min(100vw,calc(100vh*16/9));height:min(100vh,calc(100vw*9/16));container-type:size;background:radial-gradient(130% 110% at 0% 0%,#16161f 0%,#0a0a10 58%);overflow:hidden;}
-  .case-pad{position:absolute;inset:0;padding:4.6cqh 3.8cqw 3.4cqh;display:flex;flex-direction:column;}
-  .case-eyebrow{display:flex;align-items:center;gap:1.2cqw;font-size:1.45cqh;font-weight:700;letter-spacing:.2em;color:var(--cat);text-transform:uppercase;}
-  .case-eyebrow .pg{margin-left:auto;color:#6f6f86;letter-spacing:.16em;font-weight:700;}
-  .case-titlebar{display:flex;align-items:center;gap:1.3cqw;margin-top:1.7cqh;}
-  .case-titlebar .chip{background:var(--cat);color:#14140e;font-weight:800;font-size:1.7cqh;padding:.55cqh 1cqw;border-radius:.55cqh;letter-spacing:.02em;}
-  .case-titlebar h2{font-size:3.1cqh;font-weight:800;letter-spacing:-.01em;white-space:nowrap;}
-  .case-titlebar h2 em{font-style:normal;color:var(--cat);}
+  .case-pad{position:absolute;inset:0;padding:4.2cqh 3.2cqw 3cqh;display:flex;flex-direction:column;}
+  .case-eyebrow{display:flex;align-items:center;gap:1.2cqw;font-size:1.4cqh;font-weight:700;letter-spacing:.2em;color:var(--cat);text-transform:uppercase;}
+  .case-eyebrow .pg{margin-left:auto;color:#8a8a9c;letter-spacing:.14em;font-weight:700;}
+  .case-titlebar{display:flex;align-items:center;gap:1.2cqw;margin-top:1.4cqh;}
+  .case-titlebar .chip{background:var(--cat);color:#14140e;font-weight:800;font-size:1.6cqh;padding:.5cqh .9cqw;border-radius:.5cqh;}
+  .case-titlebar h2{font-size:2.8cqh;font-weight:800;letter-spacing:-.01em;white-space:nowrap;}
   .case-titlebar .rule{flex:1;height:1px;background:rgba(255,255,255,.12);}
-  .case-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw;margin-top:2.5cqh;min-height:0;}
-  .case-card{background:#13131a;border:1px solid rgba(255,255,255,.08);border-radius:1cqh;display:flex;flex-direction:column;overflow:hidden;}
-  .cc-head{background:var(--ac);color:#14140e;padding:1.9cqh 1.5cqw 1.5cqh;}
-  .cc-head .t{font-size:2.4cqh;font-weight:800;line-height:1.08;}
-  .cc-head .s{font-size:1.4cqh;font-weight:600;margin-top:.8cqh;opacity:.82;}
+  .case-grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:1.1cqw;margin-top:2cqh;min-height:0;}
+  .case-card{background:#13131a;border:1px solid rgba(255,255,255,.08);border-radius:.9cqh;display:flex;flex-direction:column;overflow:hidden;}
+  .cc-head{background:var(--ac);color:#14140e;padding:1.2cqh 1cqw 1cqh;min-height:6.2cqh;}
+  .cc-head .t{font-size:1.85cqh;font-weight:800;line-height:1.08;}
+  .cc-head .s{font-size:1.15cqh;font-weight:600;margin-top:.45cqh;opacity:.82;}
   .cc-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0e0e14;}
   .cc-img img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;}
-  .cc-engine{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.25cqh;padding:1.6cqh 1.5cqw;}
-  .cc-row{display:flex;align-items:center;gap:1cqw;}
-  .cc-badge{width:3.1cqh;height:3.1cqh;border-radius:50%;background:#22222d;color:#f3f1ec;font-size:1.4cqh;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
-  .cc-val{font-size:1.8cqh;font-weight:700;}
-  .cc-arrow{margin-left:1.45cqh;color:#4d4d60;font-size:1.5cqh;line-height:1;height:1.5cqh;}
+  .cc-engine{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.12cqh;padding:1cqh 1cqw;}
+  .cc-row{display:flex;align-items:center;gap:.7cqw;}
+  .cc-badge{width:2.4cqh;height:2.4cqh;border-radius:50%;background:#22222d;color:#f3f1ec;font-size:1.15cqh;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .cc-val{font-size:1.35cqh;font-weight:700;line-height:1.12;}
+  .cc-arrow{margin-left:1.05cqh;color:#4d4d60;font-size:1.15cqh;line-height:1;height:1cqh;}
   .cc-row.fin .cc-badge{background:var(--ac);color:#14140e;}
   .cc-row.fin .cc-val{color:var(--ac);}
-  .case-foot{display:flex;justify-content:space-between;align-items:center;margin-top:1.8cqh;font-size:1.4cqh;color:#6f6f86;font-weight:600;}
+  .case-foot{display:flex;justify-content:space-between;align-items:center;margin-top:1.4cqh;font-size:1.3cqh;color:#6f6f86;font-weight:600;}
   .case-foot .cf-brand{font-weight:800;letter-spacing:.04em;}
-  .case-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:14px;background:rgba(12,12,18,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:40px;padding:7px 16px;font-family:'Noto Sans KR',sans-serif;}
+  .case-nav{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:12px;background:rgba(12,12,18,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:40px;padding:7px 14px;font-family:'Noto Sans KR',sans-serif;}
   .case-nav button{background:none;border:none;color:#f3f1ec;cursor:pointer;font-size:18px;width:30px;height:30px;border-radius:50%;line-height:1;}
   .case-nav button:hover{background:rgba(255,255,255,.12);}
-  .case-nav .count{font-size:13px;color:#a3a3b8;font-weight:700;min-width:58px;text-align:center;}
-  .case-dots{display:flex;gap:7px;}
-  .case-dots b{width:8px;height:8px;border-radius:50%;background:#55556a;cursor:pointer;}
-  .case-dots b.on{background:var(--cat);width:20px;border-radius:5px;}
+  .case-nav .count{font-size:13px;color:#a3a3b8;font-weight:700;min-width:54px;text-align:center;}
+  .case-dots{display:flex;gap:5px;max-width:46vw;flex-wrap:wrap;justify-content:center;}
+  .case-dots b{width:7px;height:7px;border-radius:50%;background:#55556a;cursor:pointer;}
+  .case-dots b.on{background:var(--cat);width:18px;border-radius:4px;}
   #view-concept.hidden{display:none!important;}
 </style>
-<div class="case-layer" id="caseMale" style="--cat:#ff6b8a"><div class="case-stage"><div class="case-pad" id="padMale"></div></div></div>
-<div class="case-layer" id="caseFemale" style="--cat:#ff6b8a"><div class="case-stage"><div class="case-pad" id="padFemale"></div></div></div>
-<div class="case-nav" style="--cat:#ff6b8a">
+<div class="case-layer" id="caseView"><div class="case-stage"><div class="case-pad" id="casePad"></div></div></div>
+<div class="case-nav" id="caseNav">
   <button id="casePrev" aria-label="이전">‹</button>
-  <span class="count" id="caseCount">1 / 3</span>
+  <span class="count" id="caseCount">1 / 1</span>
   <button id="caseNext" aria-label="다음">›</button>
-  <span class="case-dots"><b></b><b></b><b></b></span>
+  <span class="case-dots" id="caseDots"></span>
 </div>
 <script>
 (function(){
-  var LABELS=['성','능','결','개','관'];
-  var MALE={tag:'남성향',title:'인기 캐릭터, 같은 <em>5대 축</em> 구조',foot:'성장 · 능력 · 결핍 · 개성 · 관계',
-    colors:['#4f8cff','#2dd4bf','#b78bff'],works:[
-    {n:'성진우',s:'나 혼자만 레벨업',img:'assets/case/c-m-1.jpg',v:['E급→그림자 군주','그림자 소환','약자의 설움·가족','냉정한 카리스마','헌터들·여동생 진아']},
-    {n:'김독자',s:'전지적 독자 시점',img:'assets/case/c-m-2.jpg',v:['독자→이야기의 주인공','결말을 아는 자','인정받지 못한 삶','집착적 몰입','유중혁·동료들']},
-    {n:'밤',s:'신의 탑',img:'assets/case/c-m-3.jpg',v:['무지→불규칙 랭커','무한한 잠재력','라헬을 향한 집착','순수한 맹목','라헬·동료들']}
-  ]};
-  var FEMALE={tag:'여성향',title:'인기 캐릭터, 같은 <em>5대 축</em> 구조',foot:'성장 · 능력 · 결핍 · 개성 · 관계',
-    colors:['#ff6b8a','#ffc24a','#ff8d5b'],works:[
-    {n:'유미',s:'유미의 세포들',img:'assets/case/c-f-1.jpg',v:['소심함→주체적','솔직한 공감력','연애 자신감 부족','다채로운 세포들','웅이·바비']},
-    {n:'임주경',s:'여신강림',img:'assets/case/c-f-2.jpg',v:['콤플렉스→자존감','메이크업의 마법','민낯 자격지심','화장 전후 반전','이수호·한서준']},
-    {n:'나비에',s:'재혼 황후',img:'assets/case/c-f-3.jpg',v:['버려진 황후→새 국모','흠 없는 통치력','사랑받지 못함','품위와 이성','소비에슈·하인리']}
-  ]};
-  function card(w,ac){var r='';for(var i=0;i<5;i++){r+='<div class="cc-row'+(i===4?' fin':'')+'"><span class="cc-badge">'+LABELS[i]+'</span><span class="cc-val">'+w.v[i]+'</span></div>';if(i<4)r+='<div class="cc-arrow">↓</div>';}
-    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n.replace(/\n/g,'<br>')+'</div><div class="s">'+w.s+'</div></div><div class="cc-img"><img loading="lazy" src="'+w.img+'" alt=""></div><div class="cc-engine">'+r+'</div></article>';}
-  function fill(id,d,pg){document.getElementById(id).innerHTML=
-     '<div class="case-eyebrow"><span>CASE · 인기 캐릭터 분석</span><span class="pg">'+pg+'</span></div>'
-     +'<div class="case-titlebar"><span class="chip">'+d.tag+'</span><h2>'+d.title+'</h2><span class="rule"></span></div>'
-     +'<div class="case-grid">'+d.works.map(function(w,i){return card(w,d.colors[i]);}).join('')+'</div>'
-     +'<div class="case-foot"><span>'+d.foot+'</span><span class="cf-brand">TOONING PLUS</span></div>';}
-  fill('padMale',MALE,'남성향 인기작 · 02 / 03');
-  fill('padFemale',FEMALE,'여성향 인기작 · 03 / 03');
+  var KEY='char';
+  var D=(window.CASE_DATA||{})[KEY];
+  if(!D)return;
+  var nav=document.getElementById('caseNav'); nav.style.setProperty('--cat',D.accent);
+  var view=document.getElementById('caseView'); view.style.setProperty('--cat',D.accent);
+  var PER=5;
+  var COLM=['#4f8cff','#2dd4bf','#b78bff','#5b8def','#46c1a8'];
+  var COLF=['#ff6b8a','#ffc24a','#ff8d5b','#f7799f','#ffb054'];
+  var TITLE={char:'매력 캐릭터 · 5대 축',event:'흥행작 사건 · 5요소',world:'인기 세계관 · 5대 요소'}[KEY];
+  function chunk(a){var o=[];for(var i=0;i<a.length;i+=PER)o.push(a.slice(i,i+PER));return o;}
+  var pages=[];
+  function addgroup(arr,tag,cols){chunk(arr).forEach(function(items,i,all){pages.push({tag:tag,colors:cols,items:items,gi:i,gtot:all.length});});}
+  addgroup(D.male,'남성향',COLM);
+  addgroup(D.female,'여성향',COLF);
+  function card(w,ac){
+    var r='';
+    for(var i=0;i<5;i++){
+      r+='<div class="cc-row'+(i===4?' fin':'')+'"><span class="cc-badge">'+D.labels[i]+'</span><span class="cc-val">'+w.v[i]+'</span></div>';
+      if(i<4)r+='<div class="cc-arrow">↓</div>';
+    }
+    return '<article class="case-card" style="--ac:'+ac+'"><div class="cc-head"><div class="t">'+w.n+'</div><div class="s">'+w.s+'</div></div>'
+      +'<div class="cc-img"><img loading="lazy" src="assets/case/'+w.img+'" alt=""></div><div class="cc-engine">'+r+'</div></article>';
+  }
+  function render(p){
+    document.getElementById('casePad').innerHTML=
+      '<div class="case-eyebrow"><span>CASE · 흥행 웹툰 분석</span><span class="pg">'+p.tag+' '+(p.gi+1)+' / '+p.gtot+'</span></div>'
+      +'<div class="case-titlebar"><span class="chip">'+p.tag+'</span><h2>'+TITLE+'</h2><span class="rule"></span></div>'
+      +'<div class="case-grid">'+p.items.map(function(w,i){return card(w,p.colors[i%p.colors.length]);}).join('')+'</div>'
+      +'<div class="case-foot"><span>각 작품을 같은 엔진으로 분해</span><span class="cf-brand">TOONING PLUS</span></div>';
+  }
+  var total=pages.length+1;
+  var dotsWrap=document.getElementById('caseDots');
+  for(var i=0;i<total;i++){var b=document.createElement('b');(function(idx){b.onclick=function(){show(idx);};})(i);dotsWrap.appendChild(b);}
+  var dots=dotsWrap.children;
   var concept=document.getElementById('view-concept');
-  var dots=document.querySelectorAll('.case-dots b');
   var cnt=document.getElementById('caseCount');
   var cur=0;
-  function show(i){cur=(i+3)%3;
+  function show(i){
+    cur=(i+total)%total;
     if(concept)concept.classList.toggle('hidden',cur!==0);
-    document.getElementById('caseMale').classList.toggle('active',cur===1);
-    document.getElementById('caseFemale').classList.toggle('active',cur===2);
-    cnt.textContent=(cur+1)+' / 3';
-    for(var k=0;k<dots.length;k++)dots[k].classList.toggle('on',k===cur);}
+    if(cur===0){view.classList.remove('active');}
+    else{render(pages[cur-1]);view.classList.add('active');}
+    cnt.textContent=(cur+1)+' / '+total;
+    for(var k=0;k<dots.length;k++)dots[k].classList.toggle('on',k===cur);
+  }
   document.getElementById('casePrev').onclick=function(){show(cur-1);};
   document.getElementById('caseNext').onclick=function(){show(cur+1);};
   document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')show(cur+1);else if(e.key==='ArrowLeft')show(cur-1);});
-  show(0);
   var _wlock=false;
   window.addEventListener('wheel',function(e){
     if(_wlock||Math.abs(e.deltaY)<8)return;
-    if(e.deltaY>0&&cur<2){_wlock=true;show(cur+1);}
+    if(e.deltaY>0&&cur<total-1){_wlock=true;show(cur+1);}
     else if(e.deltaY<0&&cur>0){_wlock=true;show(cur-1);}
     else return;
-    setTimeout(function(){_wlock=false;},620);
+    setTimeout(function(){_wlock=false;},560);
   },{passive:true});
+  show(0);
 })();
 </script>
 </body>
