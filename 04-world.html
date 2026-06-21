@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>세계관의 5대 요소 — 투닝플러스 창작 교육</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,6 +271,14 @@
   document.getElementById('caseNext').onclick=function(){show(cur+1);};
   document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')show(cur+1);else if(e.key==='ArrowLeft')show(cur-1);});
   show(0);
+  var _wlock=false;
+  window.addEventListener('wheel',function(e){
+    if(_wlock||Math.abs(e.deltaY)<8)return;
+    if(e.deltaY>0&&cur<2){_wlock=true;show(cur+1);}
+    else if(e.deltaY<0&&cur>0){_wlock=true;show(cur-1);}
+    else return;
+    setTimeout(function(){_wlock=false;},620);
+  },{passive:true});
 })();
 </script>
 </body>
