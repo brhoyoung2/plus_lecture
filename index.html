@@ -60,75 +60,54 @@
 
   /* ============ HERO ============ */
   .hero{
-    position:relative;min-height:100vh;padding:60px 0 0;
-    display:flex;align-items:center;overflow:hidden;
+    position:relative;min-height:100vh;overflow:hidden;background:var(--bg);
+  }
+  .hero-bg{
+    position:absolute;inset:0;z-index:0;
+    background:url('assets/hero.png') no-repeat;
+    background-size:cover;background-position:74% 42%;
+  }
+  .hero-bg::after{ /* 좌측 가독성 어둠 + 상하 블렌드 */
+    content:"";position:absolute;inset:0;
     background:
-      radial-gradient(120% 90% at 78% 30%, rgba(231,169,60,.10), transparent 55%),
-      radial-gradient(90% 80% at 10% 90%, rgba(91,141,239,.08), transparent 60%),
-      linear-gradient(180deg,#0d0d13 0%, var(--bg) 70%);
+      linear-gradient(90deg, var(--bg) 0%, rgba(11,11,15,.92) 26%, rgba(11,11,15,.48) 50%, rgba(11,11,15,0) 72%),
+      linear-gradient(180deg, rgba(11,11,15,.55) 0%, transparent 24%, transparent 70%, var(--bg) 100%);
   }
-  .hero .inner{
-    width:100%;max-width:1320px;margin:0 auto;padding:40px 56px;
-    display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:30px;
-    position:relative;z-index:3;
+  .hero-inner{
+    position:relative;z-index:3;max-width:1320px;margin:0 auto;
+    padding:16vh 56px 0;min-height:100vh;
   }
-  .hero-copy .eyebrow{
+  .hero-inner .eyebrow{
     display:inline-flex;align-items:center;gap:11px;font-size:13px;font-weight:700;
     letter-spacing:.22em;color:var(--gold);margin-bottom:26px;
   }
-  .hero-copy .eyebrow .tag{
+  .hero-inner .eyebrow .tag{
     background:var(--gold);color:#1a1206;padding:4px 11px;border-radius:4px;
     font-size:12px;font-weight:800;letter-spacing:.06em;
   }
-  .hero-copy h1{
-    font-weight:800;font-size:68px;line-height:1.08;letter-spacing:-.02em;
+  .hero-inner h1{
+    font-weight:800;font-size:74px;line-height:1.08;letter-spacing:-.02em;
+    text-shadow:0 6px 34px rgba(0,0,0,.55);
   }
-  .hero-copy h1 b{font-weight:800;
+  .hero-inner h1 b{font-weight:800;
     background:linear-gradient(92deg,var(--gold-soft),var(--gold));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .hero-copy .en{font-size:17px;color:var(--dim);letter-spacing:.04em;margin-top:16px;font-weight:500;font-style:italic;}
-  .hero-copy .lede{font-size:17px;line-height:1.7;color:var(--muted);margin-top:26px;max-width:46ch;font-weight:500;}
-  .hero-copy .lede b{color:var(--paper);font-weight:700;}
+  .hero-inner .en{font-size:18px;color:var(--muted);letter-spacing:.04em;margin-top:16px;font-weight:500;font-style:italic;}
 
-  .hero-meta{display:flex;gap:30px;margin-top:34px;}
-  .hero-meta .m .k{font-size:27px;font-weight:800;color:var(--paper);line-height:1;letter-spacing:-.01em;}
-  .hero-meta .m .k em{font-style:normal;color:var(--gold);}
-  .hero-meta .m .v{font-size:13px;color:var(--dim);margin-top:7px;font-weight:500;}
-  .hero-meta .vline{width:1px;background:var(--line2);}
-
-  .hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;}
+  .hero-cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
   .btn{
     display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
     padding:14px 24px;border-radius:12px;cursor:pointer;transition:.18s;border:1px solid transparent;
   }
   .btn.primary{background:var(--gold);color:#1a1206;}
   .btn.primary:hover{background:var(--gold-soft);transform:translateY(-2px);}
-  .btn.ghost{background:rgba(255,255,255,.04);border-color:var(--line2);color:var(--paper);}
-  .btn.ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-2px);}
+  .btn.ghost{background:rgba(255,255,255,.06);border-color:var(--line2);color:var(--paper);backdrop-filter:blur(4px);}
+  .btn.ghost:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);}
 
-  .hero-visual{position:relative;justify-self:end;width:100%;max-width:580px;}
-  .hero-visual .frame{
-    position:relative;border-radius:20px;overflow:hidden;
-    border:1px solid var(--line2);
-    box-shadow:0 40px 90px rgba(0,0,0,.6);
-    background:#000;
-  }
-  .hero-visual img{width:100%;display:block;}
-  .hero-visual .frame::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,transparent 60%, rgba(11,11,15,.35));
-  }
-  .hero-visual .cap{
-    position:absolute;left:18px;bottom:16px;z-index:2;
-    font-size:12px;color:var(--muted);letter-spacing:.04em;
-    background:rgba(0,0,0,.45);backdrop-filter:blur(4px);
-    padding:6px 12px;border-radius:20px;border:1px solid var(--line);
-  }
-  .hero-visual .float{
-    position:absolute;top:-16px;right:-14px;z-index:4;
+  .hero-badge{
+    position:absolute;top:84px;right:56px;z-index:4;
     font-size:13px;font-weight:800;color:#1a1206;background:var(--gold);
-    padding:8px 14px;border-radius:30px;box-shadow:0 14px 30px rgba(231,169,60,.35);
-    transform:rotate(4deg);
+    padding:8px 14px;border-radius:30px;box-shadow:0 14px 30px rgba(231,169,60,.35);transform:rotate(3deg);
   }
   .scroll-hint{
     position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;
@@ -193,16 +172,21 @@
 
   /* ============ RESPONSIVE ============ */
   @media (max-width:980px){
-    .hero .inner{grid-template-columns:1fr;gap:48px;}
-    .hero-visual{justify-self:center;max-width:480px;}
-    .hero-copy h1{font-size:52px;}
+    .hero-bg{background-position:68% 38%;}
+    .hero-bg::after{background:
+      linear-gradient(90deg, var(--bg) 0%, rgba(11,11,15,.9) 38%, rgba(11,11,15,.5) 64%, rgba(11,11,15,.2) 100%),
+      linear-gradient(180deg, rgba(11,11,15,.5) 0%, transparent 30%, transparent 66%, var(--bg) 100%);}
+    .hero-inner{padding-top:14vh;}
+    .hero-inner h1{font-size:54px;}
     .lesson{grid-template-columns:64px 1fr;gap:16px;}
     .lesson .no{font-size:32px;}
     .lesson .go{grid-column:2;justify-self:start;margin-top:6px;}
   }
   @media (max-width:560px){
-    .hero-copy h1{font-size:40px;}
-    .curriculum,.hero .inner{padding-left:22px;padding-right:22px;}
+    .hero-inner h1{font-size:40px;}
+    .hero-inner{padding-left:22px;padding-right:22px;}
+    .hero-badge{top:74px;right:22px;}
+    .curriculum{padding-left:22px;padding-right:22px;}
     .sec-head .l h2{font-size:30px;}
   }
 </style>
@@ -227,35 +211,15 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
-  <div class="inner">
-    <div class="hero-copy">
-      <span class="eyebrow"><span class="tag">TOONING PLUS</span> 창작 교육 · 강사용 교안</span>
-      <h1>AI 시대,<br><b>나만의 영감</b>에<br>집중하세요.</h1>
-      <p class="en">Focus on your Inspiration</p>
-      <p class="lede">속도와 제작은 AI가 맡고, <b>서사를 고르고 작품의 깊이를 더하는 일</b>은
-        여전히 사람의 몫입니다. 이 교안은 웹툰 스토리 설계의 뼈대를 순서대로 익히는
-        <b>강사용 커리큘럼</b>입니다.</p>
-
-      <div class="hero-meta">
-        <div class="m"><div class="k"><em>5</em>개 모듈</div><div class="v">소개 + 4대 스토리 설계</div></div>
-        <div class="vline"></div>
-        <div class="m"><div class="k">3대 <em>·</em> 5요소</div><div class="v">캐릭터 · 사건 · 세계관</div></div>
-        <div class="vline"></div>
-        <div class="m"><div class="k">연출 <em>+</em> 카메라</div><div class="v">앵글의 심리학</div></div>
-      </div>
-
-      <div class="hero-cta">
-        <a class="btn primary" href="#curriculum">커리큘럼 보기 <span>↓</span></a>
-        <a class="btn ghost" href="intro.pdf">투닝플러스 소개서 (PDF)</a>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <div class="float">강사용 ver 0.1</div>
-      <div class="frame">
-        <img src="assets/hero.png" alt="투닝플러스 캐릭터">
-        <div class="cap">TOONING PLUS · AI로 빚어낸 캐릭터들</div>
-      </div>
+  <div class="hero-bg"></div>
+  <div class="hero-badge">강사용 ver 0.1</div>
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="tag">TOONING PLUS</span> 창작 교육 · 강사용 교안</span>
+    <h1>AI 시대,<br><b>나만의 영감</b>에<br>집중하세요.</h1>
+    <p class="en">Focus on your Inspiration</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#curriculum">커리큘럼 보기 <span>↓</span></a>
+      <a class="btn ghost" href="intro.pdf">투닝플러스 소개서 (PDF)</a>
     </div>
   </div>
   <a class="scroll-hint" href="#curriculum">SCROLL<span>↓</span></a>
